@@ -34,10 +34,11 @@ void handleOn(){
    int G=colorValue(server.arg('G').toInt());
    int B=colorValue(server.arg('B').toInt());
    //fillCollor(R,G,B);
-   matrix.fill(matrix.color(R,G,B),0,ledCount);
+   matrix.fill(matrix.Color(R,G,B),0,ledCount);
  }
  //else {fillCollor(254,254,254);} 
- else {matrix.fill(matrix.color(250,250,250),0,ledCount);}
+ else {matrix.fill(matrix.Color(250,250,250),0,ledCount);}
+ //martix.show(); 
 }
 
 //OFF-request handler
