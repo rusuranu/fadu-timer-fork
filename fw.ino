@@ -16,9 +16,9 @@ Adafruit_NeoPixel matrix(ledcount, ledpin, NEO_GRB + NEO_KHZ800);
 
 //fillcolor
 void fillCollor(int R, int G, int B) {
-  for(int i=0; i<matrix.numPixels(); i++) { // For each pixel in strip...
-    strip.setPixelColor(i, R,G,B);         //  Set pixel's color (in RAM)
-    strip.show();                          //  Update strip to match
+  for(int i=0; i<matrix.numPixels(); i++) { // For each pixel in matrix...
+    matrix.setPixelColor(i, R,G,B);         //  Set pixel's color (in RAM)
+    matrix.show();                          //  Update matrix to match
   }
 }
 int colorValue(percent){
@@ -33,10 +33,11 @@ void handleOn(){
    int R=colorValue(server.arg('R').toInt());
    int G=colorValue(server.arg('G').toInt());
    int B=colorValue(server.arg('B').toInt());
-   fillCollor(R,G,B);
+   //fillCollor(R,G,B);
+   matrix.fill(matrix.color(R,G,B),0,ledCount);
  }
- else {fillCollor(254,254,254);} 
-  
+ //else {fillCollor(254,254,254);} 
+ else {matrix.fill(matrix.color(250,250,250),0,ledCount);}
 }
 
 //OFF-request handler
