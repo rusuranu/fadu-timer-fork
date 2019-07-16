@@ -58,7 +58,7 @@ void setup(void){
   }
   
   //set dns name 
-  if (MDNS.begin("timer")) {Serial.println("timer");;}
+  if (MDNS.begin("timer")) {;}
   
   //matrix setup
   matrix.begin();
