@@ -1,3 +1,4 @@
+
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
@@ -33,7 +34,7 @@ void handleOn(){
      int G=server.arg("G").toInt();
      int B=server.arg("B").toInt();
      for(int i=0; i<matrix.numPixels(); i++) { // For each pixel in matrix..
-       if(i%2) { matrix.setPixelColor(i, R,G,B);}
+       if((i+i/8)%2) { matrix.setPixelColor(i, R,G,B);}
        else {matrix.setPixelColor(i, R,0,0);};
      } 
    }
@@ -44,7 +45,7 @@ void handleOn(){
  }
  else {
    matrix.fill(matrix.Color(60,60,60),0,ledCount); 
-   martix.show();
+   matrix.show();
  }
 
 }
