@@ -33,7 +33,7 @@ void handleOn(){
      int G=server.arg("G").toInt();
      int B=server.arg("B").toInt();
      for(int i=0; i<matrix.numPixels(); i++) { // For each pixel in matrix..
-       if(i%2==0 ) { matrix.setPixelColor(i, R,G,B);}
+       if(i%2) { matrix.setPixelColor(i, R,G,B);}
        else {matrix.setPixelColor(i, R,0,0);};
      } 
    }
