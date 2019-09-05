@@ -1,4 +1,3 @@
-
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
@@ -9,8 +8,8 @@
 #define brightness 240 //max brightness for matrix 
 
 #ifndef STASSID
-#define STASSID "SSID"
-#define STAPSK  "Password"
+#define STASSID "Sid"
+#define STAPSK  "password"
 #endif
 const char* ssid     = STASSID;
 const char* password = STAPSK;
@@ -25,7 +24,7 @@ int colorValue(int percent){
 
 // ON-request handler
 void handleOn(){
- server.send(200, "text/plain", ""); 
+
  if( server.args()>=3){
    int R=colorValue(server.arg("R").toInt());
    int G=colorValue(server.arg("G").toInt());
@@ -33,9 +32,14 @@ void handleOn(){
    if (server.arg("color")=="1"){
      int G=server.arg("G").toInt();
      int B=server.arg("B").toInt();
-     for(int i=0; i<matrix.numPixels(); i++) { // For each pixel in matrix..
-       if((i+i/8)%2) { matrix.setPixelColor(i, R,G,B);}
-       else {matrix.setPixelColor(i, R,0,0);};
+     server.send(200, "text/plain", String(R)+"/"+String(G)+"/"+String(B) ); 
+     for(int i=0; i<8; i++) { // For each pixel in matrix..
+       for(int j=0;j<8;j++){c
+       if ((i+j*8)%3==0){ matrix.setPixelColor(j+8*i, R,G,B); 
+       }
+       else {matrix.setPixelColor(i*8+j, R,0,0);};
+      }
+       
      } 
    }
    else{
@@ -47,6 +51,7 @@ void handleOn(){
    matrix.fill(matrix.Color(60,60,60),0,ledCount); 
    matrix.show();
  }
+  
 
 }
 
