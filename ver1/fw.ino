@@ -8,8 +8,8 @@
 #define brightness 240 //max brightness for matrix 
 
 #ifndef STASSID
-#define STASSID "SSID"
-#define STAPSK  "Password"
+#define STASSID "Sid"
+#define STAPSK  "password"
 #endif
 const char* ssid     = STASSID;
 const char* password = STAPSK;
@@ -24,18 +24,34 @@ int colorValue(int percent){
 
 // ON-request handler
 void handleOn(){
- server.send(200, "text/plain", ""); 
- if( server.args()==3){
-   int R=colorValue(server.arg(0).toInt());
-   int G=colorValue(server.arg(1).toInt());
-   int B=colorValue(server.arg(2).toInt());
-   matrix.fill(matrix.Color(R,G,B),0,ledCount);
+
+ if( server.args()>=3){
+   int R=colorValue(server.arg("R").toInt());
+   int G=colorValue(server.arg("G").toInt());
+   int B=colorValue(server.arg("B").toInt());
+   if (server.arg("color")=="1"){
+     int G=server.arg("G").toInt();
+     int B=server.arg("B").toInt();
+     server.send(200, "text/plain", String(R)+"/"+String(G)+"/"+String(B) ); 
+     for(int i=0; i<8; i++) { // For each pixel in matrix..
+       for(int j=0;j<8;j++){c
+       if ((i+j*8)%3==0){ matrix.setPixelColor(j+8*i, R,G,B); 
+       }
+       else {matrix.setPixelColor(i*8+j, R,0,0);};
+      }
+       
+     } 
+   }
+   else{
+     matrix.fill(matrix.Color(R,G,B),0,ledCount);
+   }
    matrix.show();
  }
  else {
-   matrix.fill(matrix.Color(250,250,250),0,ledCount); 
-   martix.show();
+   matrix.fill(matrix.Color(60,60,60),0,ledCount); 
+   matrix.show();
  }
+  
 
 }
 
@@ -49,21 +65,25 @@ void handleOff(){
 
 //Setup
 void setup(void){
+  //matrix setup
+  matrix.begin();
+  matrix.setBrightness(brightness);
+  matrix.show();
   
   //wifi setrup
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
+    matrix.fill(matrix.Color(random(60),random(60),random(60)),0,ledCount);
+    matrix.show();
     delay(500);
+    matrix.clear();
+    matrix.show();
   }
   
   //set dns name 
   if (MDNS.begin("timer")) {;}
-  
-  //matrix setup
-  matrix.begin();
-  matrix.show();
-  matrix.setBrightness(brightness);
+   
 
   //server handlers
   server.on("/on", handleOn);
